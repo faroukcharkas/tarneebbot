@@ -4,3 +4,13 @@ export enum Suit {
     Heart,
     Spade
 }
+
+export enum GameState {
+    Start,
+    Betting,
+    Calling,
+    Placing,
+    HandEnd,
+    End,
+}
+

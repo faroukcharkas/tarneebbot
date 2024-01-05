@@ -1,20 +1,59 @@
-import Card from "@/components/card";
+import Avatar from "@/components/Avatar";
+import ControlBoard from "@/components/ControlBoard";
+import OptionCard from "@/components/OptionCard";
+import PlayingCard from "@/components/PlayingCard";
+import ScoreBoard from "@/components/ScoreBoard";
 import { Suit } from "@/globals";
-import Image from "next/image";
 
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col">
       <div
         id="card-space"
-        className="flex-1 radial-gradient flex justify-center content-center"
+        className="flex-1 relative radial-gradient h-full flex justify-center align-center p-[50px]"
       >
-        <Card value={3} suit={Suit.Club} />
+        <div className="absolute w-[200px] left-[50px] top-[25px]">
+          <ControlBoard />
+        </div>
+
+        <div className="absolute w-[200px] right-[50px] top-[25px]">
+          <ScoreBoard />
+        </div>
+
+        <div className="w-[303px] flex">
+          <div className="flex-0 flex gap-[35px] flex-row items-center">
+            <Avatar name="Opponent" color="red" />
+            <PlayingCard value={14} suit={Suit.Club} player={4} />
+          </div>
+        </div>
+        <div className="w-[150px] flex flex-col justify-between">
+          <div className="flex-0 flex gap-[35px] flex-col items-center">
+            <Avatar name="Teammate" color="green" />
+            <PlayingCard value={14} suit={Suit.Club} player={1} />
+          </div>
+          <div className="flex-0 flex gap-[35px] flex-col items-center">
+            <PlayingCard value={14} suit={Suit.Club} player={3} />
+            <Avatar name="You" color="blue" />
+          </div>
+        </div>
+        <div className="w-[303px] flex justify-end">
+          <div className="flex-0 flex gap-[35px] flex-row items-center">
+            <PlayingCard value={14} suit={Suit.Diamond} player={2} />
+            <Avatar name="You" color="yellow" />
+          </div>
+        </div>
       </div>
       <div
-        id="control-space"
-        className="min-h-[200px] flex-0 border-t-2 border-t-dark-gray"
-      ></div>
+        id="deck-space"
+        className="p-[10px] bg-red-200 flex justify-center bg-gradient-to-b from-gray-100 to-gray-200 flex-0 border-t-2 border-t-dark-gray gap-[20px]"
+      >
+        <OptionCard value={14} suit={Suit.Diamond} />
+        <OptionCard value={14} suit={Suit.Diamond} />
+        <OptionCard value={14} suit={Suit.Diamond} />
+        <OptionCard value={14} suit={Suit.Diamond} />
+        <OptionCard value={14} suit={Suit.Diamond} />
+        <OptionCard value={14} suit={Suit.Diamond} />
+      </div>
     </main>
   );
 }

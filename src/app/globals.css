@@ -4,8 +4,8 @@
 
 .radial-gradient {
   background: rgb(237,237,237);
-  background: -moz-radial-gradient(circle, rgba(237,237,237,1) 0%, rgba(207,207,207,1) 45%, rgba(255,255,255,1) 100%);
-  background: -webkit-radial-gradient(circle, rgba(237,237,237,1) 0%, rgba(207,207,207,1) 45%, rgba(255,255,255,1) 100%);
-  background: radial-gradient(circle, rgba(237,237,237,1) 0%, rgba(207,207,207,1) 45%, rgba(255,255,255,1) 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ededed",endColorstr="#ffffff",GradientType=1);
+background: -moz-radial-gradient(circle, rgba(237,237,237,1) 0%, rgba(207,207,207,1) 45%, rgba(255,255,255,1) 100%);
+background: -webkit-radial-gradient(circle, rgba(237,237,237,1) 0%, rgba(207,207,207,1) 45%, rgba(255,255,255,1) 100%);
+background: radial-gradient(circle, rgba(237,237,237,1) 0%, rgba(207,207,207,1) 45%, rgba(255,255,255,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ededed",endColorstr="#ffffff",GradientType=1);
 }
