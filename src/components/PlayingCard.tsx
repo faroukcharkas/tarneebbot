@@ -5,15 +5,18 @@ export default function PlayingCard({
   value,
   suit,
   player,
+  hidden = false,
 }: {
   value: number;
   suit: Suit;
   player: number;
+  hidden?: boolean;
 }) {
   let stringValue: string = "";
   let stringSuit: string = "";
   let stringColor: string = "";
   let stringRotation: string = "";
+  let stringHidden: string = hidden ? "hidden" : "";
 
   switch (player) {
     case 1:
@@ -70,7 +73,7 @@ export default function PlayingCard({
 
   return (
     <div
-      className={`w-[120px] h-[168px] rounded-[20px] bg-white shadow p-[7.5px] flex ${stringRotation}`}
+      className={`w-[120px] h-[168px] rounded-[20px] bg-white shadow p-[7.5px] flex ${stringRotation} ${stringHidden}`}
     >
       <div className="w-[30px] flex-col flex">
         <p className={`text-${stringColor} w-full text-center text-[25px]`}>
