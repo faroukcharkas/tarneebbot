@@ -1,18 +1,27 @@
 import { Suit } from "@/globals";
 import { CardModel } from "./CardModel";
+import { log } from "console";
 
 export class HandModel {
   // Order of cards will be descending
-  cards: { [suit in Suit]: CardModel[] } = {
-    [Suit.Diamond]: [],
-    [Suit.Club]: [],
-    [Suit.Heart]: [],
-    [Suit.Spade]: [],
-  };
+  cards: { [suit in Suit]: CardModel[] };
   player: number;
 
   constructor(player: number) {
     this.player = player;
+    this.cards = {
+      [Suit.Diamond]: [],
+      [Suit.Club]: [],
+      [Suit.Heart]: [],
+      [Suit.Spade]: [],
+    };
+  }
+
+  getCards(): CardModel[] {
+    return this.cards[Suit.Diamond]
+      .concat(this.cards[Suit.Heart])
+      .concat(this.cards[Suit.Club])
+      .concat(this.cards[Suit.Spade]);
   }
 
   dealInCard(card: CardModel): void {
@@ -82,26 +91,100 @@ export class HandModel {
     return false;
   }
 
+  pullFirstCardInHand(): CardModel {
+    let cardsInHand: CardModel[] = this.getCards();
+    return this.pullCard(cardsInHand[0].value, cardsInHand[0].suit);
+  }
+
+  countCardsInSuit(suit: Suit): number {
+    return this.cards[suit].length;
+  }
+
   countStrongCardsOfSuit(suit: Suit): number {
-    return 0;
+    let cards = this.cards[suit];
 
-    let targetArray = this.cards[suit];
-
-    if (targetArray.length == 0) {
+    // Cover [14], [<13], and [] edge cases
+    if (cards.length === 0) {
+      return 0;
+    } else if (cards.length === 1) {
+      return cards[0].value === 14 ? 1 : 0;
     }
 
-    let i = 1;
-    let res = 0;
-
-    // TODO: Take into account card flush
-    // E.g. [13, 12, 11, 10] = Strong Cards = 3
-    // E.g. [14, 12, 11, 10] = Strong Cards = 3
-    // E.g. [11, 10] = Strong Cards = 0
-
-    // Algorithm: For each consecutive card, count +1, for each gap -1, then subtract 14-leadingCard. But if first consecutive > gap, then +gap
+    let leadingConsecutives = 0;
+    let laterConsecutives = 0;
     let gaps = 0;
-    let consecutives = 0;
-    let lastNumber = 0;
-    while (i < targetArray.length) {}
+    let isLeading = true; // Flag to distinguish leading and later consecutives
+
+    for (var i = 0; i < cards.length - 1; i++) {
+      if (cards[i].value === cards[i + 1].value + 1) {
+        if (isLeading) {
+          leadingConsecutives++;
+        } else {
+          laterConsecutives++;
+        }
+      } else {
+        if (isLeading) {
+          // First gap encountered, switch to counting later consecutives
+          isLeading = false;
+          // Increment leadingConsecutives to account for the current card
+          leadingConsecutives++;
+        }
+        // Count gaps
+        gaps += cards[i].value - cards[i + 1].value - 1;
+      }
+    }
+
+    // Add the last card to the appropriate count
+    if (isLeading) {
+      leadingConsecutives++;
+    } else {
+      laterConsecutives++;
+    }
+
+    if (cards[0].value !== 14) {
+      leadingConsecutives -= 14 - cards[0].value;
+    }
+
+    return Math.max(
+      leadingConsecutives +
+        laterConsecutives -
+        Math.max(0, gaps - leadingConsecutives),
+      leadingConsecutives
+    );
+  }
+
+  countStrongCardsInHand(): number {
+    return (
+      this.countStrongCardsOfSuit(Suit.Club) +
+      this.countStrongCardsOfSuit(Suit.Diamond) +
+      this.countStrongCardsOfSuit(Suit.Heart) +
+      this.countStrongCardsOfSuit(Suit.Spade)
+    );
+  }
+
+  pickStrongestSuit(): Suit {
+    let dominantSuit = Suit.Spade;
+
+    let maxStrongCards = this.countStrongCardsOfSuit(Suit.Spade);
+    let clubStrongCards = this.countStrongCardsOfSuit(Suit.Club);
+    let heartStrongCards = this.countStrongCardsOfSuit(Suit.Heart);
+    let diamondStrongCards = this.countStrongCardsOfSuit(Suit.Diamond);
+
+    if (maxStrongCards < clubStrongCards) {
+      dominantSuit = Suit.Club;
+      maxStrongCards = clubStrongCards;
+    }
+
+    if (maxStrongCards < heartStrongCards) {
+      dominantSuit = Suit.Heart;
+      maxStrongCards = heartStrongCards;
+    }
+
+    if (maxStrongCards < diamondStrongCards) {
+      dominantSuit = Suit.Diamond;
+      maxStrongCards = diamondStrongCards;
+    }
+
+    return dominantSuit;
   }
 }

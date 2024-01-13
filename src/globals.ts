@@ -14,3 +14,7 @@ export enum GameState {
     End,
 }
 
+export enum Team {
+    Pro,
+    Anti,
+}

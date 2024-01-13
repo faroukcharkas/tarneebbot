@@ -15,21 +15,29 @@ export class CardModel {
     this.player = player;
   }
 
-  isBetterThan(other: CardModel, tarneebSuit: Suit, roundSuit: Suit): boolean {
-    if (other.suit === tarneebSuit || this.suit == tarneebSuit) {
-      if (this.suit === tarneebSuit) {
-        return other.value < this.value;
+  isBetterThan(
+    other: CardModel,
+    roundTarneeb: Suit,
+    trickTarneeb: Suit
+  ): boolean {
+    if (this.suit === roundTarneeb || other.suit === roundTarneeb) {
+      if (this.suit === roundTarneeb && other.suit !== roundTarneeb) {
+        return true;
+      } else if (this.suit === roundTarneeb && other.suit === roundTarneeb) {
+        return this.value > other.value;
       } else {
         return false;
       }
-    } else if (other.suit === roundSuit || this.suit == roundSuit) {
-      if (this.suit === tarneebSuit) {
-        return other.value < this.value;
+    } else if (this.suit === trickTarneeb || other.suit === trickTarneeb) {
+      if (this.suit === trickTarneeb && other.suit !== trickTarneeb) {
+        return true;
+      } else if (this.suit === trickTarneeb && other.suit === trickTarneeb) {
+        return this.value > other.value;
       } else {
         return false;
       }
     } else {
-      return false;
+      return this.value > other.value; // Here, both cards are of neither roundTarneeb nor trickTarneeb suits
     }
   }
 

@@ -22,24 +22,24 @@ export default function Home() {
 
         <div className="w-[303px] flex">
           <div className="flex-0 flex gap-[35px] flex-row items-center">
-            <Avatar name="Opponent" color="red" />
-            <PlayingCard value={14} suit={Suit.Club} player={4} />
+            <Avatar name="Rival #1 (4)" color="red" />
+            <PlayingCard value={14} suit={Suit.Club} player={4} hidden />
           </div>
         </div>
         <div className="w-[150px] flex flex-col justify-between">
           <div className="flex-0 flex gap-[35px] flex-col items-center">
-            <Avatar name="Teammate" color="green" />
-            <PlayingCard value={14} suit={Suit.Club} player={1} />
+            <Avatar name="Teammate (1)" color="green" />
+            <PlayingCard value={14} suit={Suit.Club} player={1} hidden />
           </div>
           <div className="flex-0 flex gap-[35px] flex-col items-center">
-            <PlayingCard value={14} suit={Suit.Club} player={3} />
-            <Avatar name="You" color="blue" />
+            <PlayingCard value={14} suit={Suit.Club} player={3} hidden />
+            <Avatar name="You (3)" color="blue" />
           </div>
         </div>
         <div className="w-[303px] flex justify-end">
           <div className="flex-0 flex gap-[35px] flex-row items-center">
-            <PlayingCard value={14} suit={Suit.Diamond} player={2} />
-            <Avatar name="You" color="yellow" />
+            <PlayingCard value={14} suit={Suit.Diamond} player={2} hidden />
+            <Avatar name="Rival #2 (2)" color="yellow" />
           </div>
         </div>
       </div>
