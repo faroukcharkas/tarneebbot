@@ -1,11 +1,23 @@
+"use client";
+
 import Avatar from "@/components/Avatar";
 import ControlBoard from "@/components/ControlBoard";
-import OptionCard from "@/components/OptionCard";
+import OptionHand from "@/components/OptionHand";
 import PlayingCard from "@/components/PlayingCard";
 import ScoreBoard from "@/components/ScoreBoard";
 import { Suit } from "@/globals";
+import { useGameStore } from "@/store/zustand";
 
 export default function Home() {
+  const player1Card = useGameStore((state) => state.player1Card);
+  const player2Card = useGameStore((state) => state.player2Card);
+  const player3Card = useGameStore((state) => state.player3Card);
+  const player4Card = useGameStore((state) => state.player4Card);
+  const player1CardDown = useGameStore((state) => state.player1CardDown);
+  const player2CardDown = useGameStore((state) => state.player2CardDown);
+  const player3CardDown = useGameStore((state) => state.player3CardDown);
+  const player4CardDown = useGameStore((state) => state.player4CardDown);
+
   return (
     <main className="flex min-h-screen flex-col">
       <div
@@ -22,38 +34,48 @@ export default function Home() {
 
         <div className="w-[303px] flex">
           <div className="flex-0 flex gap-[35px] flex-row items-center">
-            <Avatar name="Rival #1 (4)" color="red" />
-            <PlayingCard value={14} suit={Suit.Club} player={4} hidden />
+            <Avatar name="Rival #1" color="red" />
+            <PlayingCard
+              value={player4Card.value}
+              suit={player4Card.suit}
+              player={4}
+              shown={player4CardDown}
+            />
           </div>
         </div>
         <div className="w-[150px] flex flex-col justify-between">
           <div className="flex-0 flex gap-[35px] flex-col items-center">
-            <Avatar name="Teammate (1)" color="green" />
-            <PlayingCard value={14} suit={Suit.Club} player={1} hidden />
+            <Avatar name="Teammate" color="green" />
+            <PlayingCard
+              value={player1Card.value}
+              suit={player1Card.suit}
+              player={1}
+              shown={player1CardDown}
+            />
           </div>
           <div className="flex-0 flex gap-[35px] flex-col items-center">
-            <PlayingCard value={14} suit={Suit.Club} player={3} hidden />
-            <Avatar name="You (3)" color="blue" />
+            <PlayingCard
+              value={player3Card.value}
+              suit={player3Card.suit}
+              player={3}
+              shown={player3CardDown}
+            />
+            <Avatar name="You" color="blue" />
           </div>
         </div>
         <div className="w-[303px] flex justify-end">
           <div className="flex-0 flex gap-[35px] flex-row items-center">
-            <PlayingCard value={14} suit={Suit.Diamond} player={2} hidden />
-            <Avatar name="Rival #2 (2)" color="yellow" />
+            <PlayingCard
+              value={player2Card.value}
+              suit={player2Card.suit}
+              player={2}
+              shown={player2CardDown}
+            />
+            <Avatar name="Rival #2" color="yellow" />
           </div>
         </div>
       </div>
-      <div
-        id="deck-space"
-        className="p-[10px] bg-red-200 flex justify-center bg-gradient-to-b from-gray-100 to-gray-200 flex-0 border-t-2 border-t-dark-gray gap-[20px]"
-      >
-        <OptionCard value={14} suit={Suit.Diamond} />
-        <OptionCard value={14} suit={Suit.Diamond} />
-        <OptionCard value={14} suit={Suit.Diamond} />
-        <OptionCard value={14} suit={Suit.Diamond} />
-        <OptionCard value={14} suit={Suit.Diamond} />
-        <OptionCard value={14} suit={Suit.Diamond} />
-      </div>
+      <OptionHand></OptionHand>
     </main>
   );
 }

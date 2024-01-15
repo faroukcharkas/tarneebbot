@@ -5,18 +5,18 @@ export default function PlayingCard({
   value,
   suit,
   player,
-  hidden = false,
+  shown = false,
 }: {
   value: number;
   suit: Suit;
   player: number;
-  hidden?: boolean;
+  shown?: boolean;
 }) {
   let stringValue: string = "";
   let stringSuit: string = "";
   let stringColor: string = "";
   let stringRotation: string = "";
-  let stringHidden: string = hidden ? "hidden" : "";
+  let stringHidden: string = shown ? "" : "hidden";
 
   switch (player) {
     case 1:

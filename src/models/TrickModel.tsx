@@ -4,6 +4,11 @@ import { HandModel } from "./HandModel";
 import { PlayerModel } from "./PlayerModel";
 import { RoundModel } from "./RoundModel";
 import { Team } from "@/globals";
+import { useGameStore } from "@/store/zustand";
+
+function delay(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 export class TrickModel {
   cardsPlayed: { [team in Team]: CardModel[] };
@@ -22,7 +27,7 @@ export class TrickModel {
     this.dominantPlayer = -1;
   }
 
-  execute(): number {
+  async execute(): Promise<number> {
     let dominantPlayer = -1;
     let dominantCard = null;
     const players = this.roundModel.getPlayers();
@@ -35,7 +40,7 @@ export class TrickModel {
       const playerIndex = (i + startingPlayerIndex) % 4;
       const currentPlayer = players[playerIndex];
 
-      const cardDrawn = currentPlayer.askForCard(
+      const cardDrawn = await currentPlayer.askForCard(
         this.cardsPlayed,
         this.roundModel,
         this.trickTarneeb
@@ -64,6 +69,12 @@ export class TrickModel {
         dominantPlayer = playerIndex;
       }
     }
+
+    delay(1000);
+    useGameStore.getState().setPlayer1CardDown(false);
+    useGameStore.getState().setPlayer2CardDown(false);
+    useGameStore.getState().setPlayer3CardDown(false);
+    useGameStore.getState().setPlayer4CardDown(false);
 
     this.dominantPlayer = dominantPlayer + 1;
     return dominantPlayer + 1;

@@ -1,4 +1,10 @@
+"use client";
+
+import { GameModel } from "@/models/GameModel";
+import { useGameStore } from "@/store/zustand";
+
 export default function ControlBoard() {
+  const gameModel: GameModel = useGameStore((state) => state.gameModel);
   return (
     <div className="h-full w-full">
       <div className="w-full p-[10px] border-b-[1px] border-white">
@@ -24,10 +30,14 @@ export default function ControlBoard() {
         <button
           type="button"
           className="mb-2 rounded w-full bg-green-600 px-2 py-1 text-md font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          onClick={() => {
+            console.log("Play has been clicked");
+            gameModel.execute();
+          }}
         >
           Play
         </button>
-        <button
+        {/* <button
           type="button"
           className="mb-2 rounded w-full bg-blue-600 px-2 py-1 text-md font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
         >
@@ -38,7 +48,7 @@ export default function ControlBoard() {
           className="mb-2 rounded w-full bg-red-600 px-2 py-1 text-md font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
         >
           Restart
-        </button>
+        </button> */}
       </div>
     </div>
   );

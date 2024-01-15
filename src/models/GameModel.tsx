@@ -1,9 +1,10 @@
-import { Suit } from "@/globals";
+import { Suit, Team } from "@/globals";
 import { CardModel } from "./CardModel";
 import { HandModel } from "./HandModel";
 import { PlayerModel } from "./PlayerModel";
 import { RoundModel } from "./RoundModel";
 import { DeckModel } from "./DeckModel";
+import { useGameStore } from "@/store/zustand";
 
 export class GameModel {
   bettingStart: number;
@@ -18,7 +19,8 @@ export class GameModel {
     this.players = players;
   }
 
-  execute() {
+  async execute() {
+    console.log("Executing game model");
     const MAX_ROUNDS = 50;
     let rounds = 0;
     while (this.antiTeamPoints < 31 && this.proTeamPoints < 31) {
@@ -37,7 +39,10 @@ export class GameModel {
 
       for (var i = 0; i < this.players.length; i++) {
         this.players[i].setHand(cardDeck.dealAHand(i + 1));
+        console.log(`Handed out deck for Player #${i + 1}`);
       }
+
+      useGameStore.getState().setCards(this.players[2].hand.getCards());
 
       let activeBetting = true;
       while (activeBetting) {
@@ -79,6 +84,15 @@ export class GameModel {
 
       this.bettingStart = (this.bettingStart + 1) % 4; // Ensure bettingStart remains within range
 
+      useGameStore.getState().setRoundBet(roundBet);
+      useGameStore.getState().setRoundTarneeb(selectedTarneeb);
+
+      if (bettingPlayer % 2 == 0) {
+        useGameStore.getState().setBettingTeam(Team.Anti);
+      } else {
+        useGameStore.getState().setBettingTeam(Team.Pro);
+      }
+
       let round = new RoundModel(
         this.players,
         selectedTarneeb,
@@ -86,10 +100,18 @@ export class GameModel {
         bettingPlayer
       );
 
-      let results = round.execute();
+      let results = await round.execute();
 
       this.proTeamPoints += results.getProTeamPointChange();
       this.antiTeamPoints += results.getAntiTeamPointChange();
+      useGameStore.getState().resetProTricksLost();
+      useGameStore.getState().resetProTricksWon();
+      useGameStore
+        .getState()
+        .changeProGameScore(results.getProTeamPointChange());
+      useGameStore
+        .getState()
+        .changeAntiGameScore(results.getAntiTeamPointChange());
       rounds++;
     }
   }

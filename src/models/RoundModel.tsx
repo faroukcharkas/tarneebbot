@@ -4,6 +4,7 @@ import { HandModel } from "./HandModel";
 import { PlayerModel } from "./PlayerModel";
 import { TrickModel } from "./TrickModel";
 import { RoundResultModel } from "./RoundResultModel";
+import { useGameStore } from "@/store/zustand";
 
 export class RoundModel {
   players: PlayerModel[];
@@ -37,17 +38,18 @@ export class RoundModel {
     return this.players;
   }
 
-  execute(): RoundResultModel {
+  async execute(): Promise<RoundResultModel> {
     let proTeamTricksWon: number = 0;
     let antiTeamTricksWon: number = 0;
 
     for (this.tricksPlayed; this.tricksPlayed < 13; this.tricksPlayed++) {
       let newTrick = new TrickModel(this);
-      newTrick.execute();
+      await newTrick.execute();
       if (newTrick.getDominantTeam() == Team.Pro) {
         proTeamTricksWon++;
+        useGameStore.getState().changeProTricksWon(1);
       } else {
-        antiTeamTricksWon++;
+        useGameStore.getState().changeProTricksLost(1);
       }
       this.startingPlayer = newTrick.dominantPlayer;
     }

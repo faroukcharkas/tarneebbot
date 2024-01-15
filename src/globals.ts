@@ -6,6 +6,7 @@ export enum Suit {
 }
 
 export enum GameState {
+    Initial,
     Start,
     Betting,
     Calling,
